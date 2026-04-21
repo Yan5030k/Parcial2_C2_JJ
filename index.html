@@ -30,7 +30,12 @@
         <h2>Sección Smartphones</h2>
         <table id="tabla-celulares">
             <thead>
-                <tr><th>Modelo</th><th>Serie</th><th>Precio</th><th>Notas</th></tr>
+                <tr>
+                    <th>Modelo</th>
+                    <th>Serie</th>
+                    <th>Precio</th>
+                    <th>Notas</th>
+                </tr>
             </thead>
             <tbody></tbody>
         </table>
@@ -52,8 +57,17 @@
                     const tbody = document.querySelector(`#${id} tbody`);
                     lista.forEach(item => {
                         let row = `<tr>`;
-                        Object.values(item).slice(1).forEach(val => {
-                            row += `<td>${val || '<i>N/A</i>'}</td>`;
+                        
+                        
+                        Object.values(item).slice(1).forEach((val, index) => {
+                            
+                            
+                            if (id === 'tabla-celulares' && index === 2 && val) {
+                                row += `<td>$${val}</td>`;
+                            } else {
+                                row += `<td>${val || '<i>N/A</i>'}</td>`;
+                            }
+                            
                         });
                         row += `</tr>`;
                         tbody.innerHTML += row;
