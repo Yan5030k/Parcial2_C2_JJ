@@ -1,3 +1,5 @@
+Crendeciales para la db: Usuario:admin Contraseña: admin123
+
 Parcial 2: Jhoan Ortega || Jeremias Neftaly 
 
 **Proyecto:** Sistema de Catálogo y Administración para Xiaomi El Salvador.
