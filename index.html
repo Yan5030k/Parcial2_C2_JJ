@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo Público | Xiaomi El Salvador</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 40px; background-color: #f4f4f4; }
+        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #ff6900; color: white; }
+        .btn { display: inline-block; padding: 10px 20px; background: #333; color: white; text-decoration: none; border-radius: 4px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="login.php" class="btn">Ingresar al Sistema</a>
+        <h1>Xiaomi El Salvador - Catálogo Oficial</h1>
+
+        <h2>Sección Smartphones</h2>
+        <table id="tabla-celulares">
+            <thead>
+                <tr><th>Modelo</th><th>Serie</th><th>Precio</th><th>Notas</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <h2>Sección Hogar Inteligente</h2>
+        <table id="tabla-hogar">
+            <thead>
+                <tr><th>Producto</th><th>Categoría</th><th>Garantía (Meses)</th><th>Notas</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        fetch('obtener_datos.php')
+            .then(res => res.json())
+            .then(data => {
+                const render = (lista, id) => {
+                    const tbody = document.querySelector(`#${id} tbody`);
+                    lista.forEach(item => {
+                        let row = `<tr>`;
+                        Object.values(item).slice(1).forEach(val => {
+                            row += `<td>${val || '<i>N/A</i>'}</td>`;
+                        });
+                        row += `</tr>`;
+                        tbody.innerHTML += row;
+                    });
+                };
+                render(data.smartphones, 'tabla-celulares');
+                render(data.hogar, 'tabla-hogar');
+            });
+    </script>
+</body>
+</html>
