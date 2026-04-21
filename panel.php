@@ -1,42 +1,20 @@
 <?php
 session_start();
+if (!isset($_SESSION['usuario'])) { header("Location: login.php"); exit(); }
 require 'conexion.php';
 
-// Validar que solo un usuario registrado pueda ingresar
-if (!isset($_SESSION['logeado']) || $_SESSION['logeado'] !== true) {
-    header("Location: login.php");
-    exit();
-}
-
-$mensaje = '';
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validaciones de los datos ingresados
-    $nombre = trim($_POST['nombre']);
-    $categoria = $_POST['categoria'];
-    $version_global = isset($_POST['version']) ? $_POST['version'] : '';
-    $detalles = trim($_POST['detalles']);
-    
-    // Si detalles está vacío, lo convertimos en un NULL real para la BD
-    $detalles_sql = empty($detalles) ? "NULL" : "'" . $conn->real_escape_string($detalles) . "'";
+    // Validación básica
+    $nombre = $conn->real_escape_string(trim($_POST['nombre']));
+    $cat = $_POST['categoria'];
+    $meses = (int)$_POST['meses'];
+    $obs = !empty($_POST['observaciones']) ? "'".$conn->real_escape_string($_POST['observaciones'])."'" : "NULL";
 
-    // Validar que los campos obligatorios no estén vacíos
-    if (empty($nombre) || empty($categoria) || $version_global === '') {
-        $mensaje = "<span style='color:red;'>Error: Nombre, Categoría y Versión son obligatorios.</span>";
-    } else {
-        // Evitar inyección SQL
-        $nombre = $conn->real_escape_string($nombre);
-        $categoria = $conn->real_escape_string($categoria);
-        $version_global = (int)$version_global;
-
-        $sql = "INSERT INTO productos (nombre_equipo, categoria, es_version_global, detalles_extra) 
-                VALUES ('$nombre', '$categoria', $version_global, $detalles_sql)";
-
-        if ($conn->query($sql) === TRUE) {
-            $mensaje = "<span style='color:green;'>Producto registrado correctamente.</span>";
-        } else {
-            $mensaje = "<span style='color:red;'>Error al registrar: " . $conn->error . "</span>";
-        }
+    if (!empty($nombre) && !empty($cat)) {
+        $sql = "INSERT INTO hogar_inteligente (nombre_equipo, categoria_hogar, garantia_meses, observaciones) 
+                VALUES ('$nombre', '$cat', $meses, $obs)";
+        $conn->query($sql);
+        echo "<script>alert('Producto de Hogar registrado');</script>";
     }
 }
 ?>
@@ -45,40 +23,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Panel Administrativo | Xiaomi</title>
+    <title>Administración Xiaomi</title>
 </head>
-<body style="font-family: Arial; padding: 20px;">
-    <h2>Bienvenido, <?php echo $_SESSION['usuario']; ?></h2>
-    <a href="logout.php">Cerrar Sesión</a> | <a href="index.html">Ver Catálogo Público</a>
+<body style="font-family: Arial; padding: 30px;">
+    <h2>Bienvenido: <?php echo $_SESSION['usuario']; ?></h2>
+    <a href="logout.php">Cerrar Sesión</a> | <a href="index.html">Ver Web</a>
     <hr>
 
-    <h3>Ingresar Nuevo Producto</h3>
-    <?php echo $mensaje; ?><br><br>
-
-    <form method="POST" action="">
-        <label>Nombre del Equipo (Obligatorio):</label><br>
+    <h3>Registrar Producto de Hogar</h3>
+    <form method="POST">
+        <label>Nombre del Producto:</label><br>
         <input type="text" name="nombre" required><br><br>
 
-        <label>Categoría (Obligatorio):</label><br>
+        <label>Categoría:</label><br>
         <select name="categoria" required>
-            <option value="">-- Selecciona una categoría --</option>
-            <option value="Smartphones">Smartphones</option>
-            <option value="Tablets">Tablets</option>
-            <option value="Audio">Audio</option>
-            <option value="Wearables">Wearables (Smartbands/Watches)</option>
-            <option value="Hogar Inteligente">Hogar Inteligente</option>
+            <option value="Limpieza">Limpieza (Aspiradoras)</option>
+            <option value="Cocina">Cocina</option>
+            <option value="Salud">Salud y Deporte</option>
+            <option value="Cámaras">Cámaras y Seguridad</option>
         </select><br><br>
 
-        <label>¿Es versión Global? (Obligatorio):</label><br>
-        <input type="radio" id="si" name="version" value="1" required>
-        <label for="si">Sí</label><br>
-        <input type="radio" id="no" name="version" value="0" required>
-        <label for="no">No (Versión China/India)</label><br><br>
+        <label>Meses de Garantía:</label><br>
+        <input type="radio" name="meses" value="6" checked> 6 Meses
+        <input type="radio" name="meses" value="12"> 12 Meses
+        <input type="radio" name="meses" value="24"> 24 Meses<br><br>
 
-        <label>Detalles extras (Opcional - Acepta Nulos):</label><br>
-        <textarea name="detalles" rows="4" cols="30"></textarea><br><br>
+        <label>Observaciones (Opcional - acepta nulos):</label><br>
+        <textarea name="observaciones"></textarea><br><br>
 
-        <button type="submit">Guardar Producto</button>
+        <button type="submit">Guardar en Hogar Inteligente</button>
     </form>
 </body>
 </html>
