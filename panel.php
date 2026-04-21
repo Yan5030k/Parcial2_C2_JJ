@@ -79,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="contenedor">
         <div class="caja-form">
-            <h3>📱 Agregar Nuevo Smartphone</h3>
+            <h3>Agregar Nuevo Smartphone</h3>
             <form method="POST" action="">
                 <label>Modelo del Equipo:</label>
                 <input type="text" name="modelo" required placeholder="Ej: Redmi Note 13">
@@ -104,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <div class="caja-form">
-            <h3>🏠 Agregar Producto de Hogar</h3>
+            <h3>Agregar Producto de Hogar</h3>
             <form method="POST" action="">
                 <label>Nombre del Producto:</label>
                 <input type="text" name="nombre" required placeholder="Ej: Mi Robot Vacuum">
