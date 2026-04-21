@@ -60,14 +60,68 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Panel Administrativo | Xiaomi El Salvador</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; background-color: #f9f9f9; }
-        .contenedor { display: flex; gap: 40px; margin-top: 20px; }
-        .caja-form { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 50%; }
-        input[type="text"], input[type="number"], select, textarea { width: 90%; padding: 8px; margin: 8px 0; }
-        button { background-color: #ff6900; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; font-weight: bold; }
-        button:hover { background-color: #e65c00; }
-        hr { border: 1px solid #ddd; }
-    </style>
+    body { 
+        font-family: 'Segoe UI', Tahoma, sans-serif; 
+        padding: 20px; 
+        background-color: #f9f9f9; 
+    }
+    .contenedor { 
+        display: flex; 
+        gap: 40px; 
+        margin-top: 20px; 
+    }
+    .caja-form { 
+        background: white; 
+        padding: 20px; 
+        border-radius: 8px; 
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+        width: 50%; 
+    }
+    
+    
+    label {
+        display: block; 
+        font-weight: bold;
+        margin-top: 15px; 
+    }
+    
+    input[type="text"], input[type="number"], select, textarea { 
+        display: block; 
+        width: 90%; 
+        padding: 8px; 
+        margin: 8px 0; 
+        box-sizing: border-box; 
+    }
+    
+
+    button { 
+        background-color: #ff6900; 
+        color: white; 
+        border: none; 
+        padding: 10px 15px; 
+        cursor: pointer; 
+        border-radius: 4px; 
+        font-weight: bold; 
+        margin-top: 10px;
+    }
+    button:hover { 
+        background-color: #e65c00; 
+    }
+    hr { 
+        border: 1px solid #ddd; 
+    }
+
+    input[type="radio"] {
+        display: inline-block;
+        width: auto;
+    }
+    input[type="radio"] + label {
+        display: inline-block;
+        font-weight: normal;
+        margin-top: 0;
+        margin-right: 15px;
+    }
+</style>
 </head>
 <body>
     <h2>Panel de Control - Bienvenido: <?php echo $_SESSION['usuario']; ?></h2>
